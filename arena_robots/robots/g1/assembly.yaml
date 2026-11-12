@@ -1,0 +1,24 @@
+# prefix: "" because control.yaml and caps reference the unprefixed names.
+prefix: ""
+mounts:
+  torso_top:
+    parent: torso_link
+    xyz: [0.0, 0.0, 0.428]
+    rpy: [0, 0, 0]
+    accepts: [lidar]
+    frame: mid360_link
+  head:
+    parent: head_link
+    xyz: [0.0576, 0.0175, 0.430]
+    rpy: [0, 0.8308, 0]
+    accepts: [camera]
+    frame: d435_link
+defaults:
+  lidar:
+    - variant: arena_default_3d
+      mount: torso_top
+      overrides: {material: grey}
+  camera:
+    - variant: go1_depth
+      mount: head
+      params: {camID: "1"}

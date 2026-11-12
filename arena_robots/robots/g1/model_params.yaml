@@ -1,0 +1,30 @@
+robot_model: g1
+priority: 2
+base_frame: pelvis
+z_offset: 0.79
+mass:
+  base_kg: 11.0
+sensors:
+  - name: imu
+    type: imu
+    topic: ${namespace}/imu
+    frame: imu_in_torso
+    sensor: imu_in_torso
+  - name: lidar
+    type: laserscan
+    topic: ${namespace}/lidar
+    frame: mid360_link
+    sensor: mid360
+  - name: lidar_points
+    type: pointcloud
+    topic: ${namespace}/lidar/points
+    frame: mid360_link
+    sensor: mid360
+control:
+  mode: ros2_control
+  config: package://arena_robots/robots/g1/control.yaml
+  controllers:
+    - joint_state_broadcaster
+    - joint_group_position_controller
+  cmd_vel_topic: cmd_vel_stamped
+  odom_topic: odom

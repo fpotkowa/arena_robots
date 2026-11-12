@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<robot name="g1" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="g1_leg_control" params="leg prefix">
+    <joint name="${prefix}${leg}_hip_pitch_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${leg}_hip_roll_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${leg}_hip_yaw_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${leg}_knee_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.2</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${leg}_ankle_pitch_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.2</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${leg}_ankle_roll_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="g1_waist_control" params="prefix">
+    <joint name="${prefix}waist_yaw_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}waist_roll_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}waist_pitch_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="g1_arm_control" params="side prefix">
+    <joint name="${prefix}${side}_shoulder_pitch_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.2</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_shoulder_roll_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.2</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_shoulder_yaw_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_elbow_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">1.28</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_wrist_roll_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_wrist_pitch_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_wrist_yaw_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="g1_base_hw_controller" params="prefix">
+    <ros2_control name="g1_system" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+      <xacro:g1_leg_control leg="left" prefix="${prefix}"/>
+      <xacro:g1_leg_control leg="right" prefix="${prefix}"/>
+      <xacro:g1_waist_control prefix="${prefix}"/>
+      <xacro:g1_arm_control side="left" prefix="${prefix}"/>
+      <xacro:g1_arm_control side="right" prefix="${prefix}"/>
+    </ros2_control>
+  </xacro:macro>
+
+</robot>
