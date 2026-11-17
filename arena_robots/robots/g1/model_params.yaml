@@ -1,0 +1,43 @@
+robot_model: g1
+priority: 2
+base_frame: base
+z_offset: 0.79
+mass:
+  base_kg: 34.39
+sensors:
+  # order = assembly defaults render order (order-sensitive test!)
+  - name: head_camera_info
+    type: camera_info
+    topic: ${namespace}/head_camera/camera_info
+    frame: d435_depth_frame
+    sensor: d435
+  - name: head_camera_depth
+    type: depth
+    topic: ${namespace}/head_camera/depth_image
+    frame: d435_depth_frame
+    sensor: d435
+  - name: head_camera_points
+    type: pointcloud
+    topic: ${namespace}/head_camera/depth_image/points
+    frame: d435_depth_frame
+    sensor: d435
+  - name: lidar
+    type: laserscan
+    topic: ${namespace}/lidar
+    frame: lidar
+    sensor: gpu_lidar
+  - name: lidar_points
+    type: pointcloud
+    topic: ${namespace}/lidar/points
+    frame: lidar
+    sensor: gpu_lidar
+control:
+  mode: ros2_control
+  config: package://arena_robots/robots/g1/control.yaml
+  controllers:
+    - joint_state_broadcaster
+    - joint_group_position_controller
+  # No CHAMP for bipeds yet; the JTC holds the standing pose.
+  # Walking sidecar (future bipedal CHAMP) is a follow-up.
+  cmd_vel_topic: cmd_vel_stamped
+  odom_topic: odom

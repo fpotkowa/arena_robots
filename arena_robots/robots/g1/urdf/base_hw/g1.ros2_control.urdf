@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<robot name="g1" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- prefix is passed as a parameter to g1_base_hw_controller macro -->
+  <xacro:property name="prefix" value="" />
+
+  <!-- Leg control macro: 6 joints per leg (last joint = ankle_roll) -->
+  <xacro:macro name="g1_leg_control" params="side prefix">
+    <joint name="${prefix}${side}_hip_pitch_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_hip_roll_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_hip_yaw_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_knee_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_ankle_pitch_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_ankle_roll_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Arm control macro: 7 joints per arm (shoulder x3, elbow, wrist x3, hand palm fixed) -->
+  <xacro:macro name="g1_arm_control" params="side prefix">
+    <joint name="${prefix}${side}_shoulder_pitch_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_shoulder_roll_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_shoulder_yaw_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_elbow_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_wrist_roll_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_wrist_pitch_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_wrist_yaw_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Hand control macro: 7 joints per hand -->
+  <xacro:macro name="g1_hand_control" params="side prefix">
+    <!-- thumb 0/1/2 -->
+    <joint name="${prefix}${side}_hand_thumb_0_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_hand_thumb_1_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_hand_thumb_2_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <!-- middle 0/1 -->
+    <joint name="${prefix}${side}_hand_middle_0_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_hand_middle_1_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <!-- index 0/1 -->
+    <joint name="${prefix}${side}_hand_index_0_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="${prefix}${side}_hand_index_1_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Main controller macro -->
+  <xacro:macro name="g1_base_hw_controller" params="prefix">
+    <ros2_control name="g1_system" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+
+      <!-- Left leg -->
+      <xacro:g1_leg_control side="left" prefix="${prefix}"/>
+      <!-- Right leg -->
+      <xacro:g1_leg_control side="right" prefix="${prefix}"/>
+
+      <!-- Waist -->
+      <joint name="${prefix}waist_yaw_joint">
+        <command_interface name="position"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+      </joint>
+
+      <!-- Left arm -->
+      <xacro:g1_arm_control side="left" prefix="${prefix}"/>
+      <!-- Right arm -->
+      <xacro:g1_arm_control side="right" prefix="${prefix}"/>
+
+      <!-- Left hand -->
+      <xacro:g1_hand_control side="left" prefix="${prefix}"/>
+      <!-- Right hand -->
+      <xacro:g1_hand_control side="right" prefix="${prefix}"/>
+
+    </ros2_control>
+  </xacro:macro>
+
+</robot>

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot name="g1" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="sim_path" default="" />
+  <xacro:arg name="namespace" default="" />
+  <xacro:arg name="gazebo_controllers" default="" />
+  <xacro:arg name="gazebo_classic" default="false" />
+  <xacro:arg name="gazebo_ignition" default="true" />
+
+  <xacro:include filename="$(find arena_robots)/robots/g1/urdf/base_hw/g1.ros2_control.urdf" />
+
+  <link name="$(arg prefix)base">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="$(arg prefix)floating_base" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="$(arg prefix)base"/>
+    <child link="$(arg prefix)pelvis"/>
+  </joint>
+
+  <xacro:include filename="$(find arena_robots)/robots/g1/urdf/include/g1_model.xacro" />
+  <xacro:g1_base_hw_controller prefix="$(arg prefix)"/>
+
+  <gazebo>
+    <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(arg gazebo_controllers)</parameters>
+      <ros>
+        <namespace>$(arg namespace)</namespace>
+      </ros>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
+      <publish_model_pose>true</publish_model_pose>
+      <publish_link_pose>false</publish_link_pose>
+      <publish_collision_pose>false</publish_collision_pose>
+      <publish_visual_pose>false</publish_visual_pose>
+      <publish_sensor_pose>false</publish_sensor_pose>
+      <publish_nested_model_pose>true</publish_nested_model_pose>
+      <use_pose_vector_msg>false</use_pose_vector_msg>
+    </plugin>
+  </gazebo>
+
+  <!-- Foot friction: ankle_roll links carry the foot contact spheres. -->
+  <xacro:macro name="foot_friction" params="side prefix">
+    <gazebo reference="${prefix}${side}_ankle_roll_link">
+      <mu1>0.8</mu1>
+      <mu2>0.8</mu2>
+      <kp>1000000.0</kp>
+      <kd>100.0</kd>
+    </gazebo>
+  </xacro:macro>
+  <xacro:foot_friction side="left" prefix="$(arg prefix)"/>
+  <xacro:foot_friction side="right" prefix="$(arg prefix)"/>
+
+</robot>
