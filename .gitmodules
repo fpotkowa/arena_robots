@@ -121,11 +121,6 @@
 	url = https://github.com/arena-robots/go1.git
 	robot = go1
 	update = none
-[submodule "arena_robots/robots/g1/meshes"]
-	path = arena_robots/robots/g1/meshes
-	url = https://github.com/arena-robots/g1.git
-	robot = g1
-	update = none
 [submodule "arena_robots/robots/a1/meshes"]
 	path = arena_robots/robots/a1/meshes
 	url = https://github.com/arena-robots/a1.git
@@ -181,3 +176,8 @@
 	url = https://github.com/arena-robots/hokuyo_ust20lx_meshes.git
 	update = none
 	component = lidar/hokuyo_ust20lx
+[submodule "arena_robots/robots/g1/meshes"]
+	path = arena_robots/robots/g1/meshes
+	url = https://github.com/arena-robots/g1.git
+	robot = g1
+	update = none
